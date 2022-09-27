@@ -1,9 +1,10 @@
 import React from 'react';
-import { useStoreContext } from '../../utils/GlobalState';
-import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
+import { useStoreContext } from "../../utils/GlobalState";
+import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
 import { idbPromise } from "../../utils/helpers";
 
 const CartItem = ({ item }) => {
+
   const [, dispatch] = useStoreContext();
 
   const removeFromCart = item => {
@@ -12,8 +13,9 @@ const CartItem = ({ item }) => {
       _id: item._id
     });
     idbPromise('cart', 'delete', { ...item });
+
   };
-  
+
   const onChange = (e) => {
     const value = e.target.value;
     if (value === '0') {
@@ -21,18 +23,19 @@ const CartItem = ({ item }) => {
         type: REMOVE_FROM_CART,
         _id: item._id
       });
-    
       idbPromise('cart', 'delete', { ...item });
+
     } else {
       dispatch({
         type: UPDATE_CART_QUANTITY,
         _id: item._id,
         purchaseQuantity: parseInt(value)
       });
-    
       idbPromise('cart', 'put', { ...item, purchaseQuantity: parseInt(value) });
+
     }
-  };
+  }
+
   return (
     <div className="flex-row">
       <div>
@@ -51,7 +54,6 @@ const CartItem = ({ item }) => {
             value={item.purchaseQuantity}
             onChange={onChange}
           />
-
           <span
             role="img"
             aria-label="trash"
